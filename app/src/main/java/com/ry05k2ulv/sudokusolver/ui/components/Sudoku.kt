@@ -1,6 +1,7 @@
 package com.ry05k2ulv.sudokusolver.ui.components
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -12,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -27,50 +29,65 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 
-data class Position(val x: Int, val y: Int)
+data class Position(val x: Int, val y: Int) {
+    fun next() = when {
+        x == 8 && y == 8 -> null
+        x == 8 -> Position(0, y + 1)
+        else -> Position(x + 1, y)
+    }
+
+    fun prev() = when {
+        x == 0 && y == 0 -> null
+        x == 0 -> Position(8, y - 1)
+        else -> Position(x - 1, y)
+    }
+}
 
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun Sudoku(
-    modifier: Modifier = Modifier.aspectRatio(1f),
+    modifier: Modifier = Modifier,
     table: Array<Array<Int?>> = Array(9) { Array(9) { null } },
     selected: Position = Position(0, 0),
     onSelected: (Position) -> Unit = {},
 ) {
     val textMeasurer = rememberTextMeasurer()
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        Canvas(modifier = Modifier
+            .aspectRatio(1f)
+            .background(Color.White)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = { tapOffset ->
+                        val cellWidth = size.width / 9
+                        val cellHeight = size.height / 9
 
-    Canvas(modifier = modifier
-        .pointerInput(Unit) {
-            detectTapGestures(
-                onTap = { tapOffset ->
-                    val cellWidth = size.width / 9
-                    val cellHeight = size.height / 9
-
-                    val tapPosition = Position(
-                        (tapOffset.x / cellWidth).let {
-                            when {
-                                it < 0f -> 0
-                                it >= 9f -> 8
-                                else -> it.toInt()
-                            }
-                        },
-                        (tapOffset.y / cellHeight).let {
-                            when {
-                                it < 0f -> 0
-                                it >= 9f -> 8
-                                else -> it.toInt()
-                            }
-                        },
-                    )
-                    onSelected(tapPosition)
-                }
-            )
-        }, onDraw = {
-        highlightCell(selected, Color(0x80c04040))
-        drawFrame()
-        drawNumber(textMeasurer, table)
-    })
+                        val tapPosition = Position(
+                            (tapOffset.x / cellWidth).let {
+                                when {
+                                    it < 0f -> 0
+                                    it >= 9f -> 8
+                                    else -> it.toInt()
+                                }
+                            },
+                            (tapOffset.y / cellHeight).let {
+                                when {
+                                    it < 0f -> 0
+                                    it >= 9f -> 8
+                                    else -> it.toInt()
+                                }
+                            },
+                        )
+                        onSelected(tapPosition)
+                    }
+                )
+            }, onDraw = {
+            highlightCell(selected, Color(0x80c04040))
+            drawFrame()
+            drawNumber(textMeasurer, table)
+        })
+    }
 }
 
 fun DrawScope.drawFrame() {
