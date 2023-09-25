@@ -17,6 +17,10 @@ class MutableStateSudokuTable {
     operator fun set(pos: Position, value: Cell) {
         table[pos.x + pos.y * 9] = value
     }
+
+    fun clear() {
+        for (i in 0 until 81) table[i] = Cell.Empty
+    }
 }
 
 sealed class Cell {
@@ -30,5 +34,10 @@ sealed class Cell {
         override fun toString(): String {
             return ""
         }
+    }
+
+    fun getValue() = when (this) {
+        Empty -> null
+        is Number -> value
     }
 }
