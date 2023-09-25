@@ -36,18 +36,19 @@ fun InputScreen(
 ) {
     var selected by remember { mutableStateOf(Position(0, 0)) }
     val table = ssViewModel.table
+    val runnable = ssViewModel.runnable.value
     Column {
         SsTopBar(title = "Sudoku Solver") {
             val iconColor =
                 IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
-            IconButton(onClick = { ssViewModel.solve() }, colors = iconColor) {
+            IconButton(onClick = { ssViewModel.solve() }, colors = iconColor, enabled = runnable) {
                 Icon(
                     imageVector = Icons.Filled.ArrowRight,
                     contentDescription = "solver run",
                     Modifier.size(48.dp)
                 )
             }
-            IconButton(onClick = { ssViewModel.resetTable() }, colors = iconColor) {
+            IconButton(onClick = { ssViewModel.resetTable() }, colors = iconColor, enabled = runnable) {
                 Icon(
                     imageVector = Icons.Filled.Refresh,
                     contentDescription = "refresh",
@@ -70,9 +71,12 @@ fun InputScreen(
             .padding(6.dp, 8.dp),
             onClick = { keyType ->
                 when (keyType) {
-                    is KeyType.Number -> ssViewModel.updateTable(Cell.Number(keyType.n), selected)
+                    is KeyType.Number -> {
+                        ssViewModel.updateTable(Cell.Number(keyType.n), selected)
+                        selected = selected.next() ?: Position(0, 0)
+                    }
                     is KeyType.Delete -> ssViewModel.updateTable(Cell.Empty, selected)
-                    is KeyType.Next -> selected.next()?.let { selected = it }
+                    is KeyType.Next -> selected = selected.next() ?: Position(0, 0)
                 }
             })
     }
