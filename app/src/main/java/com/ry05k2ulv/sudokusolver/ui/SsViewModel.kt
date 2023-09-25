@@ -6,7 +6,7 @@ import com.ry05k2ulv.sudokusolver.solver.SudokuSolver
 import com.ry05k2ulv.sudokusolver.ui.components.Position
 
 class SsViewModel(
-    sudokuSolver: SudokuSolver = SudokuSolver()
+    val sudokuSolver: SudokuSolver = SudokuSolver()
 ) : ViewModel() {
     private var _table = mutableStateOf(Array(9) { Array<Int?>(9) { null } })
     val table
@@ -22,6 +22,8 @@ class SsViewModel(
     }
 
     fun solve() {
-
+        sudokuSolver.solve(_table.value)?.let {
+            _table.value = it
+        }
     }
 }
