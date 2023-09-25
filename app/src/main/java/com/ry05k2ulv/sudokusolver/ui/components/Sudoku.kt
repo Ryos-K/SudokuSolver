@@ -28,6 +28,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ry05k2ulv.sudokusolver.solver.Position
+import com.ry05k2ulv.sudokusolver.solver.MutableStateSudokuTable
 import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 
 
@@ -36,7 +37,7 @@ import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 @Composable
 fun Sudoku(
     modifier: Modifier = Modifier,
-    table: Array<Array<Int?>> = Array(9) { Array(9) { null } },
+    table: MutableStateSudokuTable = MutableStateSudokuTable(),
     selected: Position = Position(0, 0),
     onSelected: (Position) -> Unit = {},
 ) {
@@ -128,15 +129,15 @@ fun DrawScope.highlightCell(pos: Position, color: Color) {
 }
 
 @OptIn(ExperimentalTextApi::class)
-fun DrawScope.drawNumber(textMeasurer: TextMeasurer, table: Array<Array<Int?>>) {
+fun DrawScope.drawNumber(textMeasurer: TextMeasurer, table: MutableStateSudokuTable) {
     val cellWidth = size.width / 9
     val cellHeight = size.height / 9
 
-    table.forEachIndexed { ci, col ->
-        col.forEachIndexed { ri, cell ->
+    for (ci in 0..8) {
+        for (ri in 0..8) {
             drawText(
                 textMeasurer,
-                cell?.toString() ?: "",
+                table[ci, ri].toString(),
                 topLeft = Offset((ci + 0.25f) * cellWidth, ri * cellHeight),
                 style = TextStyle(fontSize = (cellWidth * 0.8f).toSp())
             )
@@ -155,7 +156,7 @@ fun SudokuPreview() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1f),
-                    table = Array(9) { x -> Array(9) { y -> (x + y) % 9 + 1 } },
+                    table = MutableStateSudokuTable(),
                     selected = selected,
                     onSelected = { selected = it }
                 )

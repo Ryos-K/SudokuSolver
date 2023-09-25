@@ -1,47 +1,43 @@
 package com.ry05k2ulv.sudokusolver.solver
 
-import com.ry05k2ulv.sudokusolver.ui.components.Position
-import java.util.Stack
+import kotlinx.coroutines.delay
 
 class SudokuSolver {
-    fun solve(table: Array<Array<Int?>>): Array<Array<Int?>>? {
-        val result = table.clone()
-        return when(_solve(result, table, Position(0, 0))) {
-            SudokuResult.SUCCESS -> result
-            SudokuResult.FAILURE -> null
-        }
+    suspend fun solve(result: MutableStateSudokuTable): SudokuResult {
+        return _solve(result, Position(0, 0))
     }
 
-    private fun _solve(
-        result: Array<Array<Int?>>, table: Array<Array<Int?>>, now: Position?
+    private suspend fun _solve(
+        result: MutableStateSudokuTable, now: Position?
     ): SudokuResult {
+        delay(50)
         if (now == null) return SudokuResult.SUCCESS
-        val candidates = getCandidates(result, now) ?: return _solve(result, table, now.next())
+        val candidates = getCandidates(result, now) ?: return _solve(result, now.next())
         candidates.forEach { candidate ->
-            result[now.x][now.y] = candidate
-            if (_solve(result, table, now.next()) == SudokuResult.SUCCESS)
+            result[now] = Cell.Number(candidate)
+            if (_solve(result, now.next()) == SudokuResult.SUCCESS)
                 return SudokuResult.SUCCESS
         }
-        result[now.x][now.y] = null
+        result[now] = Cell.Empty
         return SudokuResult.FAILURE
     }
 
-    private fun getCandidates(table: Array<Array<Int?>>, now: Position): Set<Int>? {
-        if (table[now.x][now.y] != null) return null
+    private fun getCandidates(table: MutableStateSudokuTable, now: Position): Set<Int>? {
+        if (table[now] is Cell.Number) return null
         val candidates = mutableSetOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
         // check col
         repeat(9) { ri ->
-            table[now.x][ri]?.let { num -> candidates.remove(num) }
+            table[now.x, ri].getValue()?.let { candidates.remove(it) }
         }
         // check row
         repeat(9) { ci ->
-            table[ci][now.y]?.let { num -> candidates.remove(num) }
+            table[ci, now.y].getValue()?.let { candidates.remove(it) }
         }
         // check block
         val topLeft = calcBlockTopLeft(now)
         repeat(3) { ci ->
             repeat(3) { ri ->
-                table[topLeft.x + ci][topLeft.y + ri]?.let { num -> candidates.remove(num) }
+                table[topLeft.x + ci, topLeft.y + ri].getValue()?.let { num -> candidates.remove(num) }
             }
         }
         return candidates
@@ -49,7 +45,7 @@ class SudokuSolver {
 
     private fun calcBlockTopLeft(now: Position) = Position((now.x / 3) * 3, (now.y / 3) * 3)
 
-    private enum class SudokuResult {
+    enum class SudokuResult {
         SUCCESS, FAILURE,
     }
 }

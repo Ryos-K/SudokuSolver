@@ -1,29 +1,29 @@
 package com.ry05k2ulv.sudokusolver.ui
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ry05k2ulv.sudokusolver.solver.Cell
+import com.ry05k2ulv.sudokusolver.solver.Position
 import com.ry05k2ulv.sudokusolver.solver.SudokuSolver
-import com.ry05k2ulv.sudokusolver.ui.components.Position
+import com.ry05k2ulv.sudokusolver.solver.MutableStateSudokuTable
+import kotlinx.coroutines.launch
 
 class SsViewModel(
     val sudokuSolver: SudokuSolver = SudokuSolver()
 ) : ViewModel() {
-    private var _table = mutableStateOf(Array(9) { Array<Int?>(9) { null } })
-    val table
-        get() = _table
+    val table = MutableStateSudokuTable()
 
-
-
-    fun updateTable(value: Int?, position: Position) {
-        _table.value = _table.value.clone().apply { this[position.x][position.y] = value }
+    fun updateTable(value: Cell, position: Position) {
+        table[position] = value
     }
+
     fun resetTable() {
-        _table.value = Array(9) { Array<Int?>(9) { null } }
+        table.clear()
     }
 
     fun solve() {
-        sudokuSolver.solve(_table.value)?.let {
-            _table.value = it
+        viewModelScope.launch {
+            sudokuSolver.solve(table)
         }
     }
 }
