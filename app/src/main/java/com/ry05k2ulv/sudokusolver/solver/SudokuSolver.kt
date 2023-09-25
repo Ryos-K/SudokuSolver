@@ -4,20 +4,26 @@ import com.ry05k2ulv.sudokusolver.ui.components.Position
 import java.util.Stack
 
 class SudokuSolver {
-    fun solve(table: Array<Array<Int?>>): Array<Array<Int>>? {
+    fun solve(table: Array<Array<Int?>>): Array<Array<Int?>>? {
         val result = table.clone()
-        _solve(result, table)
-        return null
+        return when(_solve(result, table, Position(0, 0))) {
+            SudokuResult.SUCCESS -> result
+            SudokuResult.FAILURE -> null
+        }
     }
 
-    private fun _solve(result: Array<Array<Int?>>, table: Array<Array<Int?>>) {
-        val candidatesStack = Stack<Set<Int>?>()
-        var now: Position? = Position(0, 0)
-        while(now != null) {
-            candidatesStack.push(getCandidates(result, now))
-            candidatesStack.peek()
-            now = now.next()
+    private fun _solve(
+        result: Array<Array<Int?>>, table: Array<Array<Int?>>, now: Position?
+    ): SudokuResult {
+        if (now == null) return SudokuResult.SUCCESS
+        val candidates = getCandidates(result, now) ?: return _solve(result, table, now.next())
+        candidates.forEach { candidate ->
+            result[now.x][now.y] = candidate
+            if (_solve(result, table, now.next()) == SudokuResult.SUCCESS)
+                return SudokuResult.SUCCESS
         }
+        result[now.x][now.y] = null
+        return SudokuResult.FAILURE
     }
 
     private fun getCandidates(table: Array<Array<Int?>>, now: Position): Set<Int>? {
@@ -42,4 +48,8 @@ class SudokuSolver {
     }
 
     private fun calcBlockTopLeft(now: Position) = Position((now.x / 3) * 3, (now.y / 3) * 3)
+
+    private enum class SudokuResult {
+        SUCCESS, FAILURE,
+    }
 }
