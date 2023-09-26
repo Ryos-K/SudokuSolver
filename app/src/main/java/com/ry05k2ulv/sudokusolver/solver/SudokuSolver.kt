@@ -1,8 +1,11 @@
 package com.ry05k2ulv.sudokusolver.solver
 
 import kotlinx.coroutines.delay
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SudokuSolver {
+@Singleton
+class SudokuSolver @Inject constructor() {
     suspend fun solve(result: MutableStateSudokuTable): SudokuResult {
         return _solve(result, Position(0, 0))
     }
@@ -10,14 +13,15 @@ class SudokuSolver {
     private suspend fun _solve(
         result: MutableStateSudokuTable, now: Position?
     ): SudokuResult {
-        delay(50)
         if (now == null) return SudokuResult.SUCCESS
         val candidates = getCandidates(result, now) ?: return _solve(result, now.next())
+
         candidates.forEach { candidate ->
             result[now] = Cell.Number(candidate)
             if (_solve(result, now.next()) == SudokuResult.SUCCESS)
                 return SudokuResult.SUCCESS
         }
+        delay(2)
         result[now] = Cell.Empty
         return SudokuResult.FAILURE
     }

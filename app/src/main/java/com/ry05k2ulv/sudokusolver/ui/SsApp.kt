@@ -12,6 +12,5 @@ import com.ry05k2ulv.sudokusolver.ui.input.InputScreen
 
 @Composable
 fun SsApp() {
-    val ssViewModel = SsViewModel(SudokuSolver())
-    InputScreen(ssViewModel)
+    InputScreen()
 }

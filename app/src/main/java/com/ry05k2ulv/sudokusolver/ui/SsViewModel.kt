@@ -7,11 +7,14 @@ import com.ry05k2ulv.sudokusolver.solver.Cell
 import com.ry05k2ulv.sudokusolver.solver.Position
 import com.ry05k2ulv.sudokusolver.solver.SudokuSolver
 import com.ry05k2ulv.sudokusolver.solver.MutableStateSudokuTable
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SsViewModel(
-    val sudokuSolver: SudokuSolver = SudokuSolver()
+@HiltViewModel
+class SsViewModel @Inject constructor(
+    private val sudokuSolver: SudokuSolver
 ) : ViewModel() {
     val table = MutableStateSudokuTable()
 

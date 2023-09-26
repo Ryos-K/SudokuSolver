@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ry05k2ulv.sudokusolver.solver.Cell
 import com.ry05k2ulv.sudokusolver.solver.Position
 import com.ry05k2ulv.sudokusolver.ui.SsViewModel
@@ -32,7 +33,7 @@ import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 
 @Composable
 fun InputScreen(
-    ssViewModel: SsViewModel
+    ssViewModel: SsViewModel = hiltViewModel()
 ) {
     var selected by remember { mutableStateOf(Position(0, 0)) }
     val table = ssViewModel.table
@@ -87,8 +88,7 @@ fun InputScreen(
 fun InputScreenPreview() {
     SudokuSolverTheme {
         Surface {
-            val ssViewModel = SsViewModel()
-            InputScreen(ssViewModel)
+            InputScreen()
         }
     }
 }
