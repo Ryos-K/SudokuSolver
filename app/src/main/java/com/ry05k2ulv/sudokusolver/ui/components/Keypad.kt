@@ -1,7 +1,5 @@
 package com.ry05k2ulv.sudokusolver.ui.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,20 +7,20 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Backspace
-import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -51,73 +49,87 @@ sealed class KeyType {
 @Composable
 fun Keypad(
     modifier: Modifier = Modifier,
-    onClick: (KeyType) -> Unit = {}
+    onClick: (KeyType) -> Unit = {},
+    numberColors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
+    deleteColors: IconButtonColors = IconButtonDefaults.outlinedIconButtonColors(),
+    nextColors: IconButtonColors = IconButtonDefaults.filledIconButtonColors(),
+    enabled: Boolean = true
 ) {
     Row(
-        modifier = modifier.padding(4.dp, 0.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        modifier = modifier.padding(4.dp, 0.dp), horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-            NumberButton(modifier = Modifier.weight(1f), onClick = onClick, n = 1)
-            NumberButton(modifier = Modifier.weight(1f), onClick = onClick, n = 4)
-            NumberButton(modifier = Modifier.weight(1f), onClick = onClick, n = 7)
+            NumberButton(Modifier.weight(1f), onClick, 1, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 4, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 7, numberColors, enabled)
         }
         Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-            NumberButton(modifier = Modifier.weight(1f), onClick = onClick, n = 2)
-            NumberButton(modifier = Modifier.weight(1f), onClick = onClick, n = 5)
-            NumberButton(modifier = Modifier.weight(1f), onClick = onClick, n = 8)
+            NumberButton(Modifier.weight(1f), onClick, 2, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 5, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 8, numberColors, enabled)
         }
         Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-            NumberButton(modifier = Modifier.weight(1f), onClick = onClick, n = 3)
-            NumberButton(modifier = Modifier.weight(1f), onClick = onClick, n = 6)
-            NumberButton(modifier = Modifier.weight(1f), onClick = onClick, n = 9)
+            NumberButton(Modifier.weight(1f), onClick, 3, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 6, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 9, numberColors, enabled)
         }
         Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-            DeleteButton(modifier = Modifier.weight(1f), onClick = onClick)
-            NextButton(modifier = Modifier.weight(2f), onClick = onClick)
+            DeleteButton(Modifier.weight(1f), onClick, deleteColors, enabled)
+            NextButton(Modifier.weight(2f), onClick, nextColors, enabled)
         }
     }
 }
 
 @Composable
-fun NumberButton(modifier: Modifier, onClick: (KeyType) -> Unit, n: Int) {
-    TextButton(
+fun NumberButton(
+    modifier: Modifier, onClick: (KeyType) -> Unit, n: Int, colors: ButtonColors, enabled: Boolean
+) {
+    Button(
         modifier = modifier
             .fillMaxWidth()
             .padding(6.dp, 4.dp),
         onClick = { onClick(KeyType.Number(n)) },
-        border = BorderStroke(2.dp, Color.DarkGray),
         shape = RoundedCornerShape(4.dp),
-        contentPadding = PaddingValues(1.dp)
+        contentPadding = PaddingValues(1.dp),
+        colors = colors,
+        enabled = enabled
     ) {
         Text(text = n.toString(), fontSize = 24.sp)
     }
 }
 
 @Composable
-fun DeleteButton(modifier: Modifier, onClick: (KeyType) -> Unit) {
-    IconButton(modifier = modifier
-        .fillMaxWidth()
-        .padding(8.dp, 4.dp),
-        onClick = { onClick(KeyType.Delete) }) {
+fun DeleteButton(
+    modifier: Modifier, onClick: (KeyType) -> Unit, colors: IconButtonColors, enabled: Boolean
+) {
+    IconButton(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp, 4.dp),
+        onClick = { onClick(KeyType.Delete) },
+        colors = colors,
+        enabled = enabled
+    ) {
         Icon(
             imageVector = Icons.Filled.Backspace,
             contentDescription = "Delete Key",
-            modifier = Modifier
-                .fillMaxSize(0.65f)
+            modifier = Modifier.fillMaxSize(0.65f)
         )
     }
 }
 
 @Composable
-fun NextButton(modifier: Modifier, onClick: (KeyType) -> Unit) {
+fun NextButton(
+    modifier: Modifier, onClick: (KeyType) -> Unit, colors: IconButtonColors, enabled: Boolean
+) {
     IconButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp, 4.dp)
-            .clip(RoundedCornerShape(4.dp))
-            .background(Color(0xa84444a0)),
+            .clip(RoundedCornerShape(4.dp)),
         onClick = { onClick(KeyType.Next) },
+        colors = colors,
+        enabled = enabled
     ) {
         Icon(
             imageVector = Icons.Filled.ArrowForward,
@@ -135,7 +147,8 @@ fun KeypadPreview() {
             Keypad(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(2f)
+                    .aspectRatio(2f),
+                enabled = true
             )
         }
     }
