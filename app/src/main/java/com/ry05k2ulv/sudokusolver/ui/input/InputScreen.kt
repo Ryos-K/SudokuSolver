@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -42,13 +43,27 @@ fun InputScreen(
         SsTopBar(title = "Sudoku Solver") {
             val iconColor =
                 IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
-            IconButton(onClick = { ssViewModel.solve() }, colors = iconColor, enabled = runnable) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowRight,
-                    contentDescription = "solver run",
-                    Modifier.size(48.dp)
-                )
+            when (runnable) {
+                true -> {
+                    IconButton(onClick = { ssViewModel.solve() }, colors = iconColor) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowRight,
+                            contentDescription = "solver run",
+                            Modifier.size(48.dp)
+                        )
+                    }
+                }
+                false -> {
+                    IconButton(onClick = { ssViewModel.cancelSolver() }, colors = iconColor) {
+                        Icon(
+                            imageVector = Icons.Filled.Stop,
+                            contentDescription = "solver stop",
+                            Modifier.size(42.dp)
+                        )
+                    }
+                }
             }
+
             IconButton(onClick = { ssViewModel.resetTable() }, colors = iconColor, enabled = runnable) {
                 Icon(
                     imageVector = Icons.Filled.Refresh,
@@ -76,7 +91,10 @@ fun InputScreen(
                         ssViewModel.updateTable(Cell.Number(keyType.n), selected)
                         selected = selected.next() ?: Position(0, 0)
                     }
-                    is KeyType.Delete -> ssViewModel.updateTable(Cell.Empty, selected)
+                    is KeyType.Delete -> {
+                        ssViewModel.updateTable(Cell.Empty, selected)
+                        selected = selected.prev() ?: Position(0, 0)
+                    }
                     is KeyType.Next -> selected = selected.next() ?: Position(0, 0)
                 }
             })

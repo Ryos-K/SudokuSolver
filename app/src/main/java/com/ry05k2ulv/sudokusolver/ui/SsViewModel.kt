@@ -21,6 +21,7 @@ class SsViewModel @Inject constructor(
     val table: SudokuTable
         get() = _table
 
+    var job : Job? = null
     var runnable = mutableStateOf(true)
 
     fun updateTable(value: Cell, position: Position) {
@@ -36,8 +37,15 @@ class SsViewModel @Inject constructor(
     fun solve() {
         if (!runnable.value) return
         runnable.value = false
-        viewModelScope.launch {
+        job = viewModelScope.launch {
             sudokuSolver.solve(_table)
+            runnable.value = true
+        }
+    }
+
+    fun cancelSolver() {
+        if (!runnable.value) {
+            job?.cancel()
             runnable.value = true
         }
     }
