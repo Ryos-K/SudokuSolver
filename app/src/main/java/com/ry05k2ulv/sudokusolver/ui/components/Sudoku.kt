@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ry05k2ulv.sudokusolver.solver.Position
 import com.ry05k2ulv.sudokusolver.solver.MutableStateSudokuTable
+import com.ry05k2ulv.sudokusolver.solver.SudokuTable
 import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 
 
@@ -37,7 +38,7 @@ import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 @Composable
 fun Sudoku(
     modifier: Modifier = Modifier,
-    table: MutableStateSudokuTable = MutableStateSudokuTable(),
+    table: SudokuTable = SudokuTable(),
     selected: Position = Position(0, 0),
     onSelected: (Position) -> Unit = {},
 ) {
@@ -129,7 +130,7 @@ fun DrawScope.highlightCell(pos: Position, color: Color) {
 }
 
 @OptIn(ExperimentalTextApi::class)
-fun DrawScope.drawNumber(textMeasurer: TextMeasurer, table: MutableStateSudokuTable) {
+fun DrawScope.drawNumber(textMeasurer: TextMeasurer, table: SudokuTable) {
     val cellWidth = size.width / 9
     val cellHeight = size.height / 9
 

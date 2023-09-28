@@ -7,6 +7,7 @@ import com.ry05k2ulv.sudokusolver.solver.Cell
 import com.ry05k2ulv.sudokusolver.solver.Position
 import com.ry05k2ulv.sudokusolver.solver.SudokuSolver
 import com.ry05k2ulv.sudokusolver.solver.MutableStateSudokuTable
+import com.ry05k2ulv.sudokusolver.solver.SudokuTable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -16,25 +17,27 @@ import javax.inject.Inject
 class SsViewModel @Inject constructor(
     private val sudokuSolver: SudokuSolver
 ) : ViewModel() {
-    val table = MutableStateSudokuTable()
+    private val _table = MutableStateSudokuTable()
+    val table: SudokuTable
+        get() = _table
 
     var runnable = mutableStateOf(true)
 
     fun updateTable(value: Cell, position: Position) {
         if (!runnable.value) return
-        table[position] = value
+        _table[position] = value
     }
 
     fun resetTable() {
         if (!runnable.value) return
-        table.clear()
+        _table.clear()
     }
 
     fun solve() {
         if (!runnable.value) return
         runnable.value = false
         viewModelScope.launch {
-            sudokuSolver.solve(table)
+            sudokuSolver.solve(_table)
             runnable.value = true
         }
     }
