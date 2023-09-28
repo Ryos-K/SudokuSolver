@@ -1,5 +1,9 @@
 package com.ry05k2ulv.sudokusolver.ui.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateOffsetAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -15,10 +19,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.DrawStyle
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
@@ -33,7 +40,6 @@ import com.ry05k2ulv.sudokusolver.solver.SudokuTable
 import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 
 
-
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun Sudoku(
@@ -43,6 +49,22 @@ fun Sudoku(
     onSelected: (Position) -> Unit = {},
 ) {
     val textMeasurer = rememberTextMeasurer()
+    val animatedSelected by
+        animateOffsetAsState(
+            targetValue = Offset(
+                selected.x.toFloat(),
+                selected.y.toFloat()
+            ),
+            label = "animated selected position",
+            animationSpec = tween(
+                durationMillis = 200,
+                delayMillis = 50,
+                easing = LinearOutSlowInEasing
+            )
+        )
+
+
+
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Canvas(modifier = Modifier
             .aspectRatio(1f)
@@ -73,7 +95,7 @@ fun Sudoku(
                     }
                 )
             }, onDraw = {
-            highlightCell(selected, Color(0x80c04040))
+            highlightCell(animatedSelected, Color(0x80c04040))
             drawFrame()
             drawNumber(textMeasurer, table)
         })
@@ -83,8 +105,16 @@ fun Sudoku(
 fun DrawScope.drawFrame() {
     val cellWidth = size.width / 9
     val cellHeight = size.height / 9
-    val boldLines = listOf(0, 3, 6, 9)
+    val boldLines = listOf(3, 6)
     val thinLines = listOf(1, 2, 4, 5, 7, 8)
+
+    // draw outline frame
+    drawRoundRect(
+        color = Color.Black,
+        size = size,
+        cornerRadius = CornerRadius(16f, 16f),
+        style = Stroke(width = 3.dp.toPx())
+    )
 
     // draw bold lines
     boldLines.forEach {
@@ -118,14 +148,15 @@ fun DrawScope.drawFrame() {
     }
 }
 
-fun DrawScope.highlightCell(pos: Position, color: Color) {
+fun DrawScope.highlightCell(pos: Offset, color: Color) {
     val cellWidth = size.width / 9
     val cellHeight = size.height / 9
 
-    drawRect(
+    drawRoundRect(
         color = color,
         topLeft = Offset(pos.x * cellWidth, pos.y * cellHeight),
-        size = Size(cellWidth, cellHeight)
+        size = Size(cellWidth, cellHeight),
+        cornerRadius = CornerRadius(24f, 24f)
     )
 }
 
