@@ -1,4 +1,4 @@
-package com.ry05k2ulv.sudokusolver.ui
+package com.ry05k2ulv.sudokusolver.ui.input
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SsViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val sudokuSolver: SudokuSolver
 ) : ViewModel() {
     private val _table = MutableStateSudokuTable()

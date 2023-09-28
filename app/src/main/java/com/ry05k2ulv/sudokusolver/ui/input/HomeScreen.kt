@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ry05k2ulv.sudokusolver.solver.Cell
 import com.ry05k2ulv.sudokusolver.solver.Position
-import com.ry05k2ulv.sudokusolver.ui.SsViewModel
 import com.ry05k2ulv.sudokusolver.ui.components.KeyType
 import com.ry05k2ulv.sudokusolver.ui.components.Keypad
 import com.ry05k2ulv.sudokusolver.ui.components.SsTopBar
@@ -33,19 +32,19 @@ import com.ry05k2ulv.sudokusolver.ui.components.Sudoku
 import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 
 @Composable
-fun InputScreen(
-    ssViewModel: SsViewModel = hiltViewModel()
+fun HomeScreen(
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     var selected by remember { mutableStateOf(Position(0, 0)) }
-    val table = ssViewModel.table
-    val runnable = ssViewModel.runnable.value
+    val table = homeViewModel.table
+    val runnable = homeViewModel.runnable.value
     Column {
         SsTopBar(title = "Sudoku Solver") {
             val iconColor =
                 IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
             when (runnable) {
                 true -> {
-                    IconButton(onClick = { ssViewModel.solve() }, colors = iconColor) {
+                    IconButton(onClick = { homeViewModel.solve() }, colors = iconColor) {
                         Icon(
                             imageVector = Icons.Filled.ArrowRight,
                             contentDescription = "solver run",
@@ -54,7 +53,7 @@ fun InputScreen(
                     }
                 }
                 false -> {
-                    IconButton(onClick = { ssViewModel.cancelSolver() }, colors = iconColor) {
+                    IconButton(onClick = { homeViewModel.cancelSolver() }, colors = iconColor) {
                         Icon(
                             imageVector = Icons.Filled.Stop,
                             contentDescription = "solver stop",
@@ -64,7 +63,7 @@ fun InputScreen(
                 }
             }
 
-            IconButton(onClick = { ssViewModel.resetTable() }, colors = iconColor, enabled = runnable) {
+            IconButton(onClick = { homeViewModel.resetTable() }, colors = iconColor, enabled = runnable) {
                 Icon(
                     imageVector = Icons.Filled.Refresh,
                     contentDescription = "refresh",
@@ -89,12 +88,12 @@ fun InputScreen(
             onClick = { keyType ->
                 when (keyType) {
                     is KeyType.Number -> {
-                        ssViewModel.updateTable(Cell.Number(keyType.n), selected)
+                        homeViewModel.updateTable(Cell.Number(keyType.n), selected)
                         selected = selected.next() ?: Position(8, 8)
                     }
                     is KeyType.Delete -> {
                         selected = selected.prev() ?: Position(0, 0)
-                        ssViewModel.updateTable(Cell.Empty, selected)
+                        homeViewModel.updateTable(Cell.Empty, selected)
                     }
                     is KeyType.Next -> selected = selected.next() ?: Position(8, 8)
                 }
@@ -109,7 +108,7 @@ fun InputScreen(
 fun InputScreenPreview() {
     SudokuSolverTheme {
         Surface {
-            InputScreen()
+            HomeScreen()
         }
     }
 }
