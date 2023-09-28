@@ -51,7 +51,7 @@ fun Sudoku(
     showHighlight: Boolean = true,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     lineColor: Color = MaterialTheme.colorScheme.onBackground,
-    highlightColor: Color = MaterialTheme.colorScheme.secondary,
+    highlightColor: Color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
     contentColor: Color = MaterialTheme.colorScheme.onBackground
 ) {
     val textMeasurer = rememberTextMeasurer()

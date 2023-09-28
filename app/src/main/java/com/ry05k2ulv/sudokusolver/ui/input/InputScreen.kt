@@ -90,15 +90,17 @@ fun InputScreen(
                 when (keyType) {
                     is KeyType.Number -> {
                         ssViewModel.updateTable(Cell.Number(keyType.n), selected)
-                        selected = selected.next() ?: Position(0, 0)
+                        selected = selected.next() ?: Position(8, 8)
                     }
                     is KeyType.Delete -> {
-                        ssViewModel.updateTable(Cell.Empty, selected)
                         selected = selected.prev() ?: Position(0, 0)
+                        ssViewModel.updateTable(Cell.Empty, selected)
                     }
-                    is KeyType.Next -> selected = selected.next() ?: Position(0, 0)
+                    is KeyType.Next -> selected = selected.next() ?: Position(8, 8)
                 }
-            })
+            },
+            enabled = runnable
+        )
     }
 }
 
