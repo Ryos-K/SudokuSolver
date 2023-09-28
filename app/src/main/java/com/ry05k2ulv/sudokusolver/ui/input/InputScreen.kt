@@ -79,7 +79,8 @@ fun InputScreen(
             .padding(16.dp),
             table = table,
             selected = selected,
-            onSelected = { selected = it })
+            onSelected = { selected = it },
+            showHighlight = runnable)
 
         Keypad(modifier = Modifier
             .fillMaxWidth()

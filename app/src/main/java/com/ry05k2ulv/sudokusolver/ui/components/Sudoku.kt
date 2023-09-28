@@ -48,6 +48,7 @@ fun Sudoku(
     table: SudokuTable = SudokuTable(),
     selected: Position = Position(0, 0),
     onSelected: (Position) -> Unit = {},
+    showHighlight: Boolean = true,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     lineColor: Color = MaterialTheme.colorScheme.onBackground,
     highlightColor: Color = MaterialTheme.colorScheme.secondary,
@@ -100,7 +101,7 @@ fun Sudoku(
                     }
                 )
             }, onDraw = {
-            highlightCell(animatedSelected, highlightColor)
+            if (showHighlight) highlightCell(animatedSelected, highlightColor)
             drawFrame(lineColor)
             drawNumber(textMeasurer, table, contentColor)
         })
