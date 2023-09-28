@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,6 +48,10 @@ fun Sudoku(
     table: SudokuTable = SudokuTable(),
     selected: Position = Position(0, 0),
     onSelected: (Position) -> Unit = {},
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
+    lineColor: Color = MaterialTheme.colorScheme.onBackground,
+    highlightColor: Color = MaterialTheme.colorScheme.secondary,
+    contentColor: Color = MaterialTheme.colorScheme.onBackground
 ) {
     val textMeasurer = rememberTextMeasurer()
     val animatedSelected by
@@ -68,7 +73,7 @@ fun Sudoku(
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Canvas(modifier = Modifier
             .aspectRatio(1f)
-            .background(Color.White)
+            .background(backgroundColor)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = { tapOffset ->
@@ -95,14 +100,16 @@ fun Sudoku(
                     }
                 )
             }, onDraw = {
-            highlightCell(animatedSelected, Color(0x80c04040))
-            drawFrame()
-            drawNumber(textMeasurer, table)
+            highlightCell(animatedSelected, highlightColor)
+            drawFrame(lineColor)
+            drawNumber(textMeasurer, table, contentColor)
         })
     }
 }
 
-fun DrawScope.drawFrame() {
+fun DrawScope.drawFrame(
+    color: Color
+) {
     val cellWidth = size.width / 9
     val cellHeight = size.height / 9
     val boldLines = listOf(3, 6)
@@ -110,22 +117,22 @@ fun DrawScope.drawFrame() {
 
     // draw outline frame
     drawRoundRect(
-        color = Color.Black,
+        color = color,
         size = size,
         cornerRadius = CornerRadius(16f, 16f),
-        style = Stroke(width = 3.dp.toPx())
+        style = Stroke(width = 3.dp.toPx()),
     )
 
     // draw bold lines
     boldLines.forEach {
         drawLine(
-            color = Color.Black,
+            color = color,
             start = Offset(it * cellWidth, 0f),
             end = Offset(it * cellWidth, size.height),
             strokeWidth = 3.dp.toPx()
         ) // vertical lines
         drawLine(
-            color = Color.Black,
+            color = color,
             start = Offset(0f, it * cellHeight),
             end = Offset(size.height, it * cellHeight),
             strokeWidth = 3.dp.toPx()
@@ -134,13 +141,13 @@ fun DrawScope.drawFrame() {
     // draw thin lines
     thinLines.forEach {
         drawLine(
-            color = Color.DarkGray,
+            color = color,
             start = Offset(it * cellWidth, 0f),
             end = Offset(it * cellWidth, size.height),
             strokeWidth = 1.dp.toPx()
         ) // vertical lines
         drawLine(
-            color = Color.DarkGray,
+            color = color,
             start = Offset(0f, it * cellHeight),
             end = Offset(size.width, it * cellHeight),
             strokeWidth = 1.dp.toPx()
@@ -161,7 +168,7 @@ fun DrawScope.highlightCell(pos: Offset, color: Color) {
 }
 
 @OptIn(ExperimentalTextApi::class)
-fun DrawScope.drawNumber(textMeasurer: TextMeasurer, table: SudokuTable) {
+fun DrawScope.drawNumber(textMeasurer: TextMeasurer, table: SudokuTable, color: Color) {
     val cellWidth = size.width / 9
     val cellHeight = size.height / 9
 
@@ -171,7 +178,7 @@ fun DrawScope.drawNumber(textMeasurer: TextMeasurer, table: SudokuTable) {
                 textMeasurer,
                 table[ci, ri].toString(),
                 topLeft = Offset((ci + 0.25f) * cellWidth, ri * cellHeight),
-                style = TextStyle(fontSize = (cellWidth * 0.8f).toSp())
+                style = TextStyle(fontSize = (cellWidth * 0.8f).toSp(), color = color)
             )
         }
     }
