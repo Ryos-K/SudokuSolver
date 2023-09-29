@@ -18,6 +18,8 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
@@ -34,7 +36,7 @@ fun SettingsDialog(
     onDismiss: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val settingsUiState: SettingsUiState = SettingsUiState.Success(UserSettings(DarkThemeConfig.LIGHT, true))
+    val settingsUiState: SettingsUiState by viewModel.settingsUiState.collectAsState()
     SettingsDialog(
         onDismiss = onDismiss,
         settingsUiState = settingsUiState,

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,7 +34,8 @@ import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    onSettingsClick: () -> Unit
 ) {
     var selected by remember { mutableStateOf(Position(0, 0)) }
     val table = homeViewModel.table
@@ -71,8 +73,12 @@ fun HomeScreen(
                 )
             }
             
-            IconButton(onClick = {  }) {
-                
+            IconButton(onClick = onSettingsClick, colors = iconColor) {
+                Icon(
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = "settings",
+                    Modifier.size(32.dp)
+                )
             }
         }
 
@@ -112,7 +118,7 @@ fun HomeScreen(
 fun InputScreenPreview() {
     SudokuSolverTheme {
         Surface {
-            HomeScreen()
+            HomeScreen() {}
         }
     }
 }
