@@ -1,4 +1,4 @@
-package com.ry05k2ulv.sudokusolver.ui.input
+package com.ry05k2ulv.sudokusolver.ui.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -69,6 +69,10 @@ fun HomeScreen(
                     contentDescription = "refresh",
                     Modifier.size(32.dp)
                 )
+            }
+            
+            IconButton(onClick = {  }) {
+                
             }
         }
 

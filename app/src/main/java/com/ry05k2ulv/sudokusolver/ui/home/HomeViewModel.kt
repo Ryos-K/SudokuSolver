@@ -1,4 +1,4 @@
-package com.ry05k2ulv.sudokusolver.ui.input
+package com.ry05k2ulv.sudokusolver.ui.home
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
