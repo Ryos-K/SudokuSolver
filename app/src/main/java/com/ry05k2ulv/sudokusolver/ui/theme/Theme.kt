@@ -68,3 +68,5 @@ fun SudokuSolverTheme(
         content = content
     )
 }
+
+fun supportDynamicColor() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
