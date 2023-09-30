@@ -31,8 +31,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ry05k2ulv.sudokusolver.R
-import com.ry05k2ulv.sudokusolver.R.*
+import com.ry05k2ulv.sudokusolver.R.string
 import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 
 sealed class KeyType {
@@ -80,6 +79,7 @@ fun WideKeypad(
         }
     }
 }
+
 @Composable
 fun TallKeypad(
     modifier: Modifier = Modifier,
@@ -159,8 +159,7 @@ fun NextButton(
     IconButton(
         modifier = modifier
             .fillMaxSize()
-            .padding(8.dp, 4.dp)
-            .clip(RoundedCornerShape(2.dp)),
+            .padding(8.dp, 4.dp),
         onClick = { onClick(KeyType.Next) },
         colors = colors,
         enabled = enabled

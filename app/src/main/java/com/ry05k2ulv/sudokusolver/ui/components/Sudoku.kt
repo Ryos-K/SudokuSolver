@@ -1,6 +1,5 @@
 package com.ry05k2ulv.sudokusolver.ui.components
 
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.animation.core.tween
@@ -25,7 +24,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.ExperimentalTextApi
@@ -35,8 +33,8 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ry05k2ulv.sudokusolver.solver.Position
 import com.ry05k2ulv.sudokusolver.solver.MutableStateSudokuTable
+import com.ry05k2ulv.sudokusolver.solver.Position
 import com.ry05k2ulv.sudokusolver.solver.SudokuTable
 import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 
@@ -56,18 +54,18 @@ fun Sudoku(
 ) {
     val textMeasurer = rememberTextMeasurer()
     val animatedSelected by
-        animateOffsetAsState(
-            targetValue = Offset(
-                selected.x.toFloat(),
-                selected.y.toFloat()
-            ),
-            label = "animated selected position",
-            animationSpec = tween(
-                durationMillis = 200,
-                delayMillis = 50,
-                easing = LinearOutSlowInEasing
-            )
+    animateOffsetAsState(
+        targetValue = Offset(
+            selected.x.toFloat(),
+            selected.y.toFloat()
+        ),
+        label = "animated selected position",
+        animationSpec = tween(
+            durationMillis = 200,
+            delayMillis = 50,
+            easing = LinearOutSlowInEasing
         )
+    )
 
 
 

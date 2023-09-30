@@ -32,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ry05k2ulv.sudokusolver.R
 import com.ry05k2ulv.sudokusolver.R.*
 import com.ry05k2ulv.sudokusolver.solver.Cell
 import com.ry05k2ulv.sudokusolver.solver.Position
@@ -57,9 +56,9 @@ fun HomeScreen(
         PortraitScreen(
             table = table,
             runnable = runnable,
-            onClickRun = viewModel::solve,
-            onClickStop = viewModel::cancelSolver,
-            onClickReset = viewModel::resetTable,
+            onClickRun = viewModel::runSolver,
+            onClickStop = viewModel::stopSolver,
+            onClickReset = viewModel::clearTable,
             onClickSettings = onClickSettings,
             updateTable = viewModel::updateTable
         )
@@ -67,9 +66,9 @@ fun HomeScreen(
         LandscapeScreen(
             table = table,
             runnable = runnable,
-            onClickRun = viewModel::solve,
-            onClickStop = viewModel::cancelSolver,
-            onClickReset = viewModel::resetTable,
+            onClickRun = viewModel::runSolver,
+            onClickStop = viewModel::stopSolver,
+            onClickReset = viewModel::clearTable,
             onClickSettings = onClickSettings,
             updateTable = viewModel::updateTable
         )
@@ -96,7 +95,7 @@ private fun PortraitScreen(
                 true -> RunButton(onClick = onClickRun, colors = iconColors)
                 false -> StopButton(onClick = onClickStop, colors = iconColors)
             }
-            ResetButton(onClick = onClickReset, colors = iconColors, enabled = runnable)
+            ClearButton(onClick = onClickReset, colors = iconColors, enabled = runnable)
             SettingsButton(onClick = onClickSettings, colors = iconColors, enabled = runnable)
         }
 
@@ -174,8 +173,8 @@ private fun LandscapeScreen(
                     true -> RunButton(onClick = onClickRun, colors = iconColors)
                     false -> StopButton(onClick = onClickStop, colors = iconColors)
                 }
-                ResetButton(onClick = onClickReset, colors = iconColors, enabled = runnable)
-                SettingsButton(onClick = onClickSettings, colors = iconColors, enabled = runnable)
+                ClearButton(onClick = onClickReset, colors = iconColors, enabled = runnable)
+                SettingsButton(onClick = onClickSettings, colors = iconColors)
             }
 
             TallKeypad(
@@ -234,7 +233,7 @@ private fun StopButton(
 }
 
 @Composable
-private fun ResetButton(
+private fun ClearButton(
     onClick: () -> Unit,
     colors: IconButtonColors,
     enabled: Boolean
@@ -256,7 +255,7 @@ private fun ResetButton(
 private fun SettingsButton(
     onClick: () -> Unit,
     colors: IconButtonColors,
-    enabled: Boolean
+    enabled: Boolean = true
 ) {
     IconButton(
         onClick = onClick,

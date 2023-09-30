@@ -1,8 +1,6 @@
 package com.ry05k2ulv.sudokusolver.ui.settings
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -28,12 +26,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ry05k2ulv.sudokusolver.R
-import com.ry05k2ulv.sudokusolver.R.*
+import com.ry05k2ulv.sudokusolver.R.string
 import com.ry05k2ulv.sudokusolver.model.DarkThemeConfig
 import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 import com.ry05k2ulv.sudokusolver.ui.theme.supportDynamicColor
@@ -77,6 +73,7 @@ fun SettingsDialog(
                     SettingsUiState.Loading -> {
                         CircularProgressIndicator(Modifier.padding(20.dp))
                     }
+
                     is SettingsUiState.Success -> {
                         SettingsPanel(
                             settings = settingsUiState.settings,

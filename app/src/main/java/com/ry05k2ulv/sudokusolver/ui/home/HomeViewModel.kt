@@ -4,9 +4,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ry05k2ulv.sudokusolver.solver.Cell
+import com.ry05k2ulv.sudokusolver.solver.MutableStateSudokuTable
 import com.ry05k2ulv.sudokusolver.solver.Position
 import com.ry05k2ulv.sudokusolver.solver.SudokuSolver
-import com.ry05k2ulv.sudokusolver.solver.MutableStateSudokuTable
 import com.ry05k2ulv.sudokusolver.solver.SudokuTable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -21,7 +21,7 @@ class HomeViewModel @Inject constructor(
     val table: SudokuTable
         get() = _table
 
-    var job : Job? = null
+    var job: Job? = null
     var runnable = mutableStateOf(true)
 
     fun updateTable(value: Cell, position: Position) {
@@ -29,12 +29,12 @@ class HomeViewModel @Inject constructor(
         _table[position] = value
     }
 
-    fun resetTable() {
+    fun clearTable() {
         if (!runnable.value) return
         _table.clear()
     }
 
-    fun solve() {
+    fun runSolver() {
         if (!runnable.value) return
         runnable.value = false
         job = viewModelScope.launch {
@@ -43,7 +43,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun cancelSolver() {
+    fun stopSolver() {
         if (!runnable.value) {
             job?.cancel()
             runnable.value = true

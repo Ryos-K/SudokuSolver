@@ -12,7 +12,7 @@
     <string name="settings_confirm">OK</string>
     <string name="top_bar_run_icon_description">Run Solver</string>
     <string name="top_bar_stop_icon_description">Stop Solver</string>
-    <string name="top_bar_reset_icon_description">Reset Table</string>
+    <string name="top_bar_reset_icon_description">Clear Table</string>
     <string name="top_bar_settings_icon_description">Settings</string>
     <string name="keypad_next_icon_description">Next</string>
     <string name="keypad_back_icon_description">Back and Delete</string>

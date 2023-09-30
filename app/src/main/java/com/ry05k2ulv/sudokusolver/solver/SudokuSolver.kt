@@ -41,7 +41,8 @@ class SudokuSolver @Inject constructor() {
         val topLeft = calcBlockTopLeft(now)
         repeat(3) { ci ->
             repeat(3) { ri ->
-                table[topLeft.x + ci, topLeft.y + ri].getValue()?.let { num -> candidates.remove(num) }
+                table[topLeft.x + ci, topLeft.y + ri].getValue()
+                    ?.let { num -> candidates.remove(num) }
             }
         }
         return candidates
