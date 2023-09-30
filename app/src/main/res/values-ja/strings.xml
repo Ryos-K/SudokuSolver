@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">数独計算機</string>
+    <string name="top_bar_title">数独計算機</string>
+    <string name="settings_title">設定</string>
+    <string name="settings_use_dynamic_color_title">ダイナミックカラー</string>
+    <string name="settings_use_dynamic_color_yes">使用する</string>
+    <string name="settings_use_dynamic_color_no">使用しない</string>
+    <string name="settings_dark_theme_config_title">ダークモード</string>
+    <string name="settings_dark_theme_config_system">システム標準</string>
+    <string name="settings_dark_theme_config_light">ライト</string>
+    <string name="settings_dark_theme_config_dark">ダーク</string>
+    <string name="settings_confirm">決定</string>
+    <string name="top_bar_run_icon_description">実行</string>
+    <string name="top_bar_stop_icon_description">停止</string>
+    <string name="top_bar_reset_icon_description">初期化</string>
+    <string name="top_bar_settings_icon_description">設定</string>
+    <string name="keypad_next_icon_description">次へ</string>
+    <string name="keypad_back_icon_description">削除</string>
+</resources>

@@ -26,11 +26,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ry05k2ulv.sudokusolver.R
+import com.ry05k2ulv.sudokusolver.R.*
 import com.ry05k2ulv.sudokusolver.model.DarkThemeConfig
 import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 import com.ry05k2ulv.sudokusolver.ui.theme.supportDynamicColor
@@ -61,7 +64,7 @@ fun SettingsDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "Settings",
+                stringResource(string.settings_title),
                 style = MaterialTheme.typography.titleLarge
             )
         },
@@ -87,7 +90,7 @@ fun SettingsDialog(
         },
         confirmButton = {
             Text(
-                text = "OK",
+                text = stringResource(string.settings_confirm),
                 style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier
                     .padding(end = 8.dp)
@@ -105,31 +108,31 @@ private fun ColumnScope.SettingsPanel(
     onChangeDarkTheme: (DarkThemeConfig) -> Unit,
 ) {
     if (supportDynamicTheme) {
-        SectionTitle(text = "Use Dynamic Color")
+        SectionTitle(text = stringResource(string.settings_use_dynamic_color_title))
         Column(Modifier.selectableGroup()) {
             ChooserRow(
-                text = "Yes",
+                text = stringResource(string.settings_use_dynamic_color_yes),
                 selected = settings.useDynamicColor,
                 onClick = { onChangeDynamicColor(true) })
             ChooserRow(
-                text = "No",
+                text = stringResource(string.settings_use_dynamic_color_no),
                 selected = !settings.useDynamicColor,
                 onClick = { onChangeDynamicColor(false) })
         }
     }
 
-    SectionTitle(text = "Mode")
+    SectionTitle(text = stringResource(string.settings_dark_theme_config_title))
     Column(Modifier.selectableGroup()) {
         ChooserRow(
-            text = "System Default",
+            text = stringResource(string.settings_dark_theme_config_system),
             selected = settings.darkThemeConfig == DarkThemeConfig.SYSTEM,
             onClick = { onChangeDarkTheme(DarkThemeConfig.SYSTEM) })
         ChooserRow(
-            text = "Light",
+            text = stringResource(string.settings_dark_theme_config_light),
             selected = settings.darkThemeConfig == DarkThemeConfig.LIGHT,
             onClick = { onChangeDarkTheme(DarkThemeConfig.LIGHT) })
         ChooserRow(
-            text = "Dark",
+            text = stringResource(string.settings_dark_theme_config_dark),
             selected = settings.darkThemeConfig == DarkThemeConfig.DARK,
             onClick = { onChangeDarkTheme(DarkThemeConfig.DARK) })
     }

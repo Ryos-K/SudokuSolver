@@ -28,9 +28,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ry05k2ulv.sudokusolver.R
+import com.ry05k2ulv.sudokusolver.R.*
 import com.ry05k2ulv.sudokusolver.solver.Cell
 import com.ry05k2ulv.sudokusolver.solver.Position
 import com.ry05k2ulv.sudokusolver.solver.SudokuTable
@@ -86,7 +89,7 @@ private fun PortraitScreen(
     var selected by remember { mutableStateOf(Position(0, 0)) }
 
     Column {
-        SsTopBar(title = "Solver") {
+        SsTopBar(title = stringResource(string.top_bar_title)) {
             val iconColors =
                 IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
             when (runnable) {
@@ -163,7 +166,7 @@ private fun LandscapeScreen(
         ) {
             SsTopBar(
                 modifier = Modifier.clip(RoundedCornerShape(bottomStart = 8.dp)),
-                title = "Solver"
+                title = stringResource(string.top_bar_title)
             ) {
                 val iconColors =
                     IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
@@ -210,7 +213,7 @@ private fun RunButton(
     IconButton(onClick = onClick, colors = colors) {
         Icon(
             imageVector = Icons.Filled.ArrowRight,
-            contentDescription = "solver run",
+            contentDescription = stringResource(string.top_bar_run_icon_description),
             Modifier.size(48.dp)
         )
     }
@@ -224,7 +227,7 @@ private fun StopButton(
     IconButton(onClick = onClick, colors = colors) {
         Icon(
             imageVector = Icons.Filled.Stop,
-            contentDescription = "solver stop",
+            contentDescription = stringResource(string.top_bar_stop_icon_description),
             Modifier.size(42.dp)
         )
     }
@@ -243,7 +246,7 @@ private fun ResetButton(
     ) {
         Icon(
             imageVector = Icons.Filled.Refresh,
-            contentDescription = "refresh",
+            contentDescription = stringResource(string.top_bar_reset_icon_description),
             Modifier.size(32.dp)
         )
     }
@@ -262,7 +265,7 @@ private fun SettingsButton(
     ) {
         Icon(
             imageVector = Icons.Filled.Settings,
-            contentDescription = "settings",
+            contentDescription = stringResource(string.top_bar_settings_icon_description),
             Modifier.size(32.dp)
         )
     }

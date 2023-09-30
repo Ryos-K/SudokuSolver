@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">SudokuSolver</string>
+    <string name="top_bar_title">Solver</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_use_dynamic_color_title">Use Dynamic Color</string>
+    <string name="settings_use_dynamic_color_yes">Yes</string>
+    <string name="settings_use_dynamic_color_no">No</string>
+    <string name="settings_dark_theme_config_title">Mode</string>
+    <string name="settings_dark_theme_config_system">System Default</string>
+    <string name="settings_dark_theme_config_light">Light</string>
+    <string name="settings_dark_theme_config_dark">Dark</string>
+    <string name="settings_confirm">OK</string>
+    <string name="top_bar_run_icon_description">Run Solver</string>
+    <string name="top_bar_stop_icon_description">Stop Solver</string>
+    <string name="top_bar_reset_icon_description">Reset Table</string>
+    <string name="top_bar_settings_icon_description">Settings</string>
+    <string name="keypad_next_icon_description">Next</string>
+    <string name="keypad_back_icon_description">Back and Delete</string>
 </resources>
