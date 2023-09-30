@@ -35,7 +35,6 @@ fun SsTopBar(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth()
             .height(56.dp)
             .background(background),
         verticalAlignment = Alignment.CenterVertically

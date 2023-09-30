@@ -1,6 +1,8 @@
 package com.ry05k2ulv.sudokusolver.ui.settings
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -8,8 +10,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -63,7 +67,9 @@ fun SettingsDialog(
         },
         text = {
             Divider()
-            Column {
+            Column(
+                Modifier.verticalScroll(rememberScrollState())
+            ) {
                 when (settingsUiState) {
                     SettingsUiState.Loading -> {
                         CircularProgressIndicator(Modifier.padding(20.dp))

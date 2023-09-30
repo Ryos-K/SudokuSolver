@@ -9,7 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -19,10 +23,11 @@ import com.ry05k2ulv.sudokusolver.ui.SsApp
 import com.ry05k2ulv.sudokusolver.ui.theme.SudokuSolverTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    val viewModel : MainActivityViewModel by viewModels()
+    val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +42,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SsApp()
+
+                    SsApp(
+                        windowSizeClass = calculateWindowSizeClass(activity = this)
+                    )
+
                 }
             }
         }
@@ -48,7 +57,7 @@ class MainActivity : ComponentActivity() {
 private fun darkThemeConfig(uiState: MainActivityUiState) =
     when (uiState) {
         MainActivityUiState.Loading -> isSystemInDarkTheme()
-        is MainActivityUiState.Success -> when(uiState.userData.darkThemeConfig) {
+        is MainActivityUiState.Success -> when (uiState.userData.darkThemeConfig) {
             DarkThemeConfig.SYSTEM -> isSystemInDarkTheme()
             DarkThemeConfig.LIGHT -> false
             DarkThemeConfig.DARK -> true

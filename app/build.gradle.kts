@@ -82,6 +82,8 @@ dependencies {
     // Add Datastore
     implementation("androidx.datastore:datastore:1.0.0")
     implementation("com.google.protobuf:protobuf-javalite:3.19.1")
+
+    implementation("androidx.compose.material3:material3-window-size-class:1.1.2")
 }
 
 kapt {

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,7 +49,7 @@ sealed class KeyType {
  */
 
 @Composable
-fun Keypad(
+fun WideKeypad(
     modifier: Modifier = Modifier,
     onClick: (KeyType) -> Unit = {},
     numberColors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
@@ -79,6 +81,39 @@ fun Keypad(
         }
     }
 }
+@Composable
+fun TallKeypad(
+    modifier: Modifier = Modifier,
+    onClick: (KeyType) -> Unit = {},
+    numberColors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
+    deleteColors: IconButtonColors = IconButtonDefaults.outlinedIconButtonColors(),
+    nextColors: IconButtonColors = IconButtonDefaults.filledIconButtonColors(),
+    enabled: Boolean = true
+) {
+    Column(
+        modifier = modifier.padding(4.dp, 0.dp), verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+            NumberButton(Modifier.weight(1f), onClick, 1, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 2, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 3, numberColors, enabled)
+        }
+        Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+            NumberButton(Modifier.weight(1f), onClick, 4, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 5, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 6, numberColors, enabled)
+        }
+        Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+            NumberButton(Modifier.weight(1f), onClick, 7, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 8, numberColors, enabled)
+            NumberButton(Modifier.weight(1f), onClick, 9, numberColors, enabled)
+        }
+        Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+            DeleteButton(Modifier.weight(1f), onClick, deleteColors, enabled)
+            NextButton(Modifier.weight(2f), onClick, nextColors, enabled)
+        }
+    }
+}
 
 @Composable
 fun NumberButton(
@@ -86,7 +121,7 @@ fun NumberButton(
 ) {
     Button(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(6.dp, 4.dp),
         onClick = { onClick(KeyType.Number(n)) },
         shape = RoundedCornerShape(4.dp),
@@ -99,12 +134,12 @@ fun NumberButton(
 }
 
 @Composable
-fun DeleteButton(
+private fun DeleteButton(
     modifier: Modifier, onClick: (KeyType) -> Unit, colors: IconButtonColors, enabled: Boolean
 ) {
     IconButton(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(8.dp, 4.dp),
         onClick = { onClick(KeyType.Delete) },
         colors = colors,
@@ -124,9 +159,9 @@ fun NextButton(
 ) {
     IconButton(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(8.dp, 4.dp)
-            .clip(RoundedCornerShape(4.dp)),
+            .clip(RoundedCornerShape(2.dp)),
         onClick = { onClick(KeyType.Next) },
         colors = colors,
         enabled = enabled
@@ -139,12 +174,27 @@ fun NextButton(
     }
 }
 
-@Preview
+@Preview(device = Devices.AUTOMOTIVE_1024p, widthDp = 720, heightDp = 360)
 @Composable
-fun KeypadPreview() {
+fun TallKeypadPreview() {
     SudokuSolverTheme {
         Surface {
-            Keypad(
+            TallKeypad(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .aspectRatio(0.75f, true),
+                enabled = true
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun WideKeypadPreview() {
+    SudokuSolverTheme {
+        Surface {
+            WideKeypad(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(2f),
