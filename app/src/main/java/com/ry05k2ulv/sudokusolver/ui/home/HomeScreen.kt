@@ -88,7 +88,9 @@ private fun PortraitScreen(
     var selected by remember { mutableStateOf(Position(0, 0)) }
 
     Column {
-        SsTopBar(title = stringResource(string.top_bar_title)) {
+        SsTopBar(
+            modifier = Modifier,
+            title = stringResource(string.top_bar_title)) {
             val iconColors =
                 IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
             when (runnable) {
@@ -96,7 +98,7 @@ private fun PortraitScreen(
                 false -> StopButton(onClick = onClickStop, colors = iconColors)
             }
             ClearButton(onClick = onClickReset, colors = iconColors, enabled = runnable)
-            SettingsButton(onClick = onClickSettings, colors = iconColors, enabled = runnable)
+            SettingsButton(onClick = onClickSettings, colors = iconColors)
         }
 
         Sudoku(
@@ -160,7 +162,7 @@ private fun LandscapeScreen(
         )
         Column(
             modifier = Modifier
-                .width(322.dp),
+                .width(360.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SsTopBar(

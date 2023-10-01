@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,7 +44,9 @@ fun SsTopBar(
                 .weight(1f),
             fontSize = 32.sp,
             fontFamily = FontFamily.Serif,
-            color = titleColor
+            color = titleColor,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         content()
     }
